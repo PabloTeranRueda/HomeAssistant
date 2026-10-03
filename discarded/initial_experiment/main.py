@@ -74,7 +74,7 @@ try:
 
                 Thread(target = timer, kwargs={"seconds":total_seconds,"voice":voice}).start()
 
-                recorder.clear()
+                recorder.clear() # TODO: This may be done inside the timer function
 
 
         
