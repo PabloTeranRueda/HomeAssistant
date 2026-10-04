@@ -5,7 +5,7 @@ import pyaudio
 class Voice:
     """Handles text-to-speech using Piper."""
 
-    def __init__(self, model_path: str, speaker_id: int = 1):
+    def __init__(self, model_path: str = "resources/dii_es-ES.onnx", speaker_id: int = 1):
         self.voice = PiperVoice.load(model_path)
         self.speaker_id = speaker_id
         self.audio = pyaudio.PyAudio()

@@ -1,13 +1,18 @@
 from datetime import datetime
+from threading import Event
 from typing import Any
 
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
+from app.Voice import Voice
+
 @dataclass
 class AbstractAction(ABC):
     request_time:datetime
+    voice: Voice
+    stop_event:Event
 
     @property
     @abstractmethod
@@ -23,3 +28,7 @@ class AbstractAction(ABC):
     @abstractmethod
     def param_dict(self) -> dict[str,object]:
         return self._base_param_dict()
+
+    @abstractmethod
+    def run(self) -> None:
+        ...

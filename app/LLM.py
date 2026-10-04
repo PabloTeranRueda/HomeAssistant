@@ -8,16 +8,18 @@ class LLM:
     def __init__(self,model:str="qwen3:4b") -> None:
         self.client: Client = Client(host="http://localhost:11434")
         self.model: str = model
-        self.system_prompt = self.load_prompt("system_role")
+        self.system_prompt: str = self.load_prompt("system_role")
 
-    def load_prompt(self,prompt_name) -> str:
+    def load_prompt(self,prompt_name:str) -> str:
         try:
             with open(f"app\\prompts\\{prompt_name}.md","r",encoding="utf-8") as prompt:
                 contents = prompt.read()
-        except Exception:
-            return f"You are not allowed to make any action and must always answer an empty json."
-        else:
-            return contents.strip()
+        except FileNotFoundError as error:
+            raise RuntimeError(
+                f"System prompt not found: {prompt_name}"
+            ) from error
+        
+        return contents.strip()
 
     def interpret(self, text: str) -> LLMResponse:
         chat_response: ChatResponse = self.client.chat(

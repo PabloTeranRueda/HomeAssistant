@@ -1,25 +1,24 @@
 from dataclasses import dataclass
-from datetime import datetime
-from typing import override, Any
-
+from typing import override
 from app.actions.AbstractAction import AbstractAction
-from app.functionalities.timer import timer
 
 @dataclass
-class TimerAction(AbstractAction):
-    duration:int
+class GreetingAction(AbstractAction):
+    response:str
     
     @property
     @override
     def action_type(self) -> str:
-        return "timer"
+        return "greeting"
 
     @override
     def param_dict(self) -> dict[str, object]:
         param_dict:dict[str, object] = super().param_dict()
-        param_dict["duration"] = self.duration
+        param_dict["response"] = self.response
         return param_dict
-
+    
     @override
     def run(self) -> None:
-        timer(self.duration,self.voice, self.stop_event)
+        if self.stop_event.is_set():
+            return
+        self.voice.say(self.response)
