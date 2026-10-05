@@ -15,6 +15,13 @@ class Player:
                 sound=r"resources/sounds/listener_off.wav",
                 flags=SND_FILENAME | SND_ASYNC
             )
+
+    @staticmethod
+    def llm_working():
+        PlaySound(
+                sound=r"resources/sounds/llm_working.wav",
+                flags=SND_FILENAME | SND_ASYNC
+            )
     
     @staticmethod
     def timer_finished():

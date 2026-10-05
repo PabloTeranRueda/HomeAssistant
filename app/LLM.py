@@ -5,7 +5,7 @@ from app.LLMResponse import LLMResponse
 # from ollama._client import Client
 
 class LLM:
-    def __init__(self,model:str="qwen3:4b") -> None:
+    def __init__(self,model:str="qwen3:4b-instruct") -> None:
         self.client: Client = Client(host="http://localhost:11434")
         self.model: str = model
         self.system_prompt: str = self.load_prompt("system_role")
@@ -34,7 +34,8 @@ class LLM:
                     "content": text
                 }
             ],
-            stream=False
+            stream=False,
+            # think=False,
         )
 
         llm_response: LLMResponse = LLMResponse(thinking=chat_response.message.thinking,

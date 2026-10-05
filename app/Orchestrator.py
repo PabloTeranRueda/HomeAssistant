@@ -1,4 +1,5 @@
 from threading import Thread, Event
+import time
 
 from app.ActionDispatcher import ActionDispatcher
 from app.LLM import LLM
@@ -35,15 +36,23 @@ class Orchestrator:
 
                 user_input: str = self.listener.listen()
 
+                if user_input == "":
+                    continue
+                elif user_input == "o la tera":
+                    user_input = "Hola, Tera"
+
                 if self.stop_event.is_set():
                     break
                 
-                Player.command_received()
                 request = self.llm.interpret(user_input)
 
-                if request.content is None:
-                    Player.unvalid_command()
-                    return
+                if request.content is None or request.content == r"{}":
+                    continue
+
+                Player.command_received()
+                time.sleep(3)
+                Player.llm_working()
+                time.sleep(3)
 
                 thread: Thread = Thread(
                                     target=self.action_dispatcher.handle_request,

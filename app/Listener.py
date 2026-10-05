@@ -17,7 +17,8 @@ class Listener:
     SILENCE_DURATION = 0.8
     PRE_ROLL_DURATION = 0.3
 
-    ENERGY_THRESHOLD = 0.005
+    # ENERGY_THRESHOLD = 0.005
+    ENERGY_THRESHOLD = 0.01
     REQUIRED_SPEECH_CHUNKS = 2
 
     def __init__(

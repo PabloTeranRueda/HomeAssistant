@@ -20,14 +20,16 @@ class ActionDispatcher:
         validated_action: AbstractAction | None = self.validate_command(request)
         
         if validated_action is None:
-            self.voice.say("Sorry, I did not understand you.")
+            Player.unvalid_command()
+            self.voice.say("Perdona, no te he entendido.")
             return False
         
         try:
             self.dispatch_action(validated_action)
             return True
         except Exception:
-            self.voice.say("Something went wrong.")
+            Player.unvalid_command()
+            self.voice.say("Ha ocurrido un error.")
             return False
 
     def validate_command(self, json_request:str) -> AbstractAction|None:
@@ -69,7 +71,6 @@ class ActionDispatcher:
                 self.stop_event.set()
 
             case _:
-                Player.unvalid_command()
                 return None
     
     def dispatch_action(self, action:AbstractAction) -> None:
