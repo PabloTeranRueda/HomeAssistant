@@ -1,9 +1,11 @@
 import json
 
 from app.Voice import Voice
+from app.actions.AddToShoppingListAction import AddToShoppingListAction
 from app.actions.AbstractAction import AbstractAction
 from app.actions.GreetingAction import GreetingAction
 from app.actions.TimerAction import TimerAction
+from app.actions.ShutdownAction import ShutdownAction
 from app.functionalities.timer import timer
 from app.Player import Player
 from typing import cast, Any
@@ -27,6 +29,10 @@ class ActionDispatcher:
         try:
             self.dispatch_action(validated_action)
             return True
+        except ValueError as e:
+            Player.unvalid_command()
+            self.voice.say(str(e))
+            return False
         except Exception:
             Player.unvalid_command()
             self.voice.say("Ha ocurrido un error.")
@@ -69,6 +75,15 @@ class ActionDispatcher:
 
             case "shutdown":
                 self.stop_event.set()
+                return ShutdownAction(request_time=datetime.now(),voice=self.voice,stop_event=self.stop_event)
+            
+            case "AddToShoppingListAction":
+                items_list: Any | None = request_json.get("items")
+                if items_list is None or not isinstance(items_list,list) or not items_list:
+                    return None
+                if any(not isinstance(item, str) for item in items_list):
+                    raise ValueError("There was an error during list interpretation, please try again.")
+                return AddToShoppingListAction(request_time=datetime.now(),voice=self.voice,items_list=items_list,stop_event=self.stop_event)
 
             case _:
                 return None

@@ -1,5 +1,6 @@
 from threading import Thread, Event
 import time
+import re
 
 from app.ActionDispatcher import ActionDispatcher
 from app.LLM import LLM
@@ -36,10 +37,12 @@ class Orchestrator:
 
                 user_input: str = self.listener.listen()
 
+                # Check for empty input and replace most common errors in audio to text conversion
                 if user_input == "":
                     continue
-                elif user_input == "o la tera":
-                    user_input = "Hola, Tera"
+
+                user_input = re.sub("o la tera","Hola, Tera",user_input)
+                user_input = re.sub("ap(a|á)(r|g)ate","apágate",user_input)
 
                 if self.stop_event.is_set():
                     break
