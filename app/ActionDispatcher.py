@@ -77,7 +77,7 @@ class ActionDispatcher:
                 self.stop_event.set()
                 return ShutdownAction(request_time=datetime.now(),voice=self.voice,stop_event=self.stop_event)
             
-            case "AddToShoppingListAction":
+            case "add_to_shopping_list":
                 items_list: Any | None = request_json.get("items")
                 if items_list is None or not isinstance(items_list,list) or not items_list:
                     return None
