@@ -1,0 +1,22 @@
+<!-- ng serve --host 0.0.0.0 -->
+
+
+<h1>My Shopping List</h1>
+
+<p>Total items: {{ shoppingList().length }}</p>
+
+<ul>
+  @for (item of shoppingList(); track item) {
+    <li class="shopping-item">
+      <span>{{ item }}</span>
+
+      <button
+        type="button"
+        class="delete-button"
+        aria-label="Delete {{ item }}"
+        (click)="deleteItem(item)">
+        <img src="/bin.png" alt="" class="trash-icon">
+      </button>
+    </li>
+  }
+</ul>

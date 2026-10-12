@@ -22,7 +22,9 @@ class AddToShoppingListAction(AbstractAction):
     def run(self) -> None:
         #TODO Create call to BBDD actions api
         # Below is dummy action
-        with open(r"resources/shopping_list.csv", mode="a", newline="", encoding="utf-8") as shopping_list:
+        with open(r"resources/shopping_list.csv", mode="r+", newline="", encoding="utf-8") as shopping_list:
+            existing_items = shopping_list.read().splitlines()
             writer = csv.writer(shopping_list)
             for item in self.items_list:
-                writer.writerow([item])
+                if item not in existing_items:
+                    writer.writerow([item])
